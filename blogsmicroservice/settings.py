@@ -28,8 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]"]
 
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -64,6 +62,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'blogsmicroservice.blogsapp',
     'drf_yasg',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
