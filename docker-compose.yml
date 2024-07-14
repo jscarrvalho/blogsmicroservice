@@ -1,0 +1,26 @@
+services:
+  blogsmicroservice:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/blogsmicroservice
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - mysql-db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=blogsmicroservice_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql-volume:
