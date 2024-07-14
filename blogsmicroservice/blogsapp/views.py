@@ -9,13 +9,22 @@ from drf_yasg import openapi
 from blogsmicroservice.blogsapp.models import BlogPost
 from rest_framework import viewsets, status
 from blogsmicroservice.blogsapp.serializers import BlogPostSerializer
-from .permissions import IsAuthenticatedForManipulateResource
+from .permissions import IsAuthenticatedForManipulateResource, IsAuthor
 
 
 class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.filter(deleted_at__isnull=True).order_by('-date_posted')
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticatedForManipulateResource]
+
+    def get_permissions(self):
+        if self.action in ['update', 'partial_update', 'destroy']:
+            self.permission_classes.append(IsAuthor)
+        return [permission() for permission in self.permission_classes]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
 
     def destroy(self, request, *args, **kwargs):
         blog_post = self.get_object()
