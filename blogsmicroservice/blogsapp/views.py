@@ -7,14 +7,15 @@ from rest_framework.authtoken.models import Token
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from blogsmicroservice.blogsapp.models import BlogPost
-from rest_framework import permissions, viewsets, status
+from rest_framework import viewsets, status
 from blogsmicroservice.blogsapp.serializers import BlogPostSerializer
+from .permissions import IsAuthenticatedForManipulateResource
 
 
 class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.filter(deleted_at__isnull=True).order_by('-date_posted')
     serializer_class = BlogPostSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticatedForManipulateResource]
 
     def destroy(self, request, *args, **kwargs):
         blog_post = self.get_object()
