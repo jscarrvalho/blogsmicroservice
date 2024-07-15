@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from blogsmicroservice.blogsapp.models import BlogPost
 from rest_framework.authtoken.models import Token
 
+
 class BlogsMicroserviceTests(APITestCase):
 
     def setUp(self):
@@ -35,7 +36,7 @@ class BlogsMicroserviceTests(APITestCase):
 
     def test_get_list_blog_post(self):
         url = reverse('blogpost-list')
-        self.client.credentials() #Do not require credentials
+        self.client.credentials()  # Do not require credentials
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 1)
@@ -50,7 +51,7 @@ class BlogsMicroserviceTests(APITestCase):
 
     def test_get_blog_post(self):
         url = reverse('blogpost-detail', kwargs={'pk': self.blog_post.pk})
-        self.client.credentials() #Do not require credentials
+        self.client.credentials()  # Do not require credentials
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['title'], self.blog_post.title)
